@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D-DAY Countdown</title>
+</head>
+<style>
+    body {
+        font-family: comic sans ms;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        height: 100vh;
+        margin: 50;
+        background-color: #f0f8ff;
+    }
+    .container {
+        border: 2px solid #000000;
+       padding: 10px;
+        width: 300px;
+        background-color: #ffcee9;
+        text-align: center;
+    }
+    .top-left {
+        text-align: left;
+        font-size: 16px;
+        margin-bottom: 10px;
+        margin-left: 10px;
+    }
+    .bottom-left{
+        text-align: left;
+        font-size: 15px;
+        margin-left: 10px;
+    }
+    .center {
+        font-size: 30px;
+        font-weight: bold;
+        padding: 20px;
+        border: 2px solid #000000;
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+    .emoji {
+        font-size: 1.2em;
+        vertical-align: middle;
+    }
+    .container b {
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="top-left">
+        Start from <b id="startDate">[WHEN]</b>
+    </div>
+    <div class="center">
+        D + <b id="daysPassed">0</b> <span class="emoji" id="emoji">😀</span>
+    </div>
+    <div class="bottom-left">
+        <b id="daysLeft">0</b> days left to <b>D - </b><b id="nextDday">50</b> (<span id="nextDdayDate"></span>) <span class="emoji">❣</span>
+    </div>
+</div>
+
+<script>
+    const startDate = new Date("2024-10-20"); // set day after when start. IDK why :(
+    const emojis = ["😀", "😃", "😄", "😁", "😆", "🥰", "😘", "😚", "🤪", "🥳", "😎"];
+    const ddayInterval = 100;
+
+    function updateDdayInfo() {
+        const currentDate = new Date();
+        const dayDifference = Math.floor((currentDate - startDate) / (1000 * 60 * 60 * 24)) + 2;
+        const emoji = emojis[(dayDifference - 1) % emojis.length];
+        
+        let nextDday = Math.ceil(dayDifference / ddayInterval) * ddayInterval;
+        let daysLeft = nextDday - dayDifference;
+        
+        let nextDdayDate = new Date(startDate.getTime());
+        nextDdayDate.setDate(startDate.getDate() + nextDday - 1);
+
+        document.getElementById("startDate").textContent = startDate.toLocaleDateString();
+        document.getElementById("daysPassed").textContent = dayDifference;
+        document.getElementById("emoji").textContent = emoji;
+        document.getElementById("daysLeft").textContent = daysLeft;
+        document.getElementById("nextDday").textContent = nextDday;
+        document.getElementById("nextDdayDate").textContent = nextDdayDate.toLocaleDateString(); // Display the next D-Day date
+    }
+
+    updateDdayInfo();
+    setInterval(updateDdayInfo, 1000 * 60 * 60 * 24); // Update daily
+</script>
+
+</body>
+</html>
